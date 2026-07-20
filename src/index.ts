@@ -9,6 +9,9 @@ export const geminiModels = [
 ] as const
 export type GeminiModel = (typeof geminiModels)[number]
 
+export const thinkingLevels = ['minimal', 'low', 'medium', 'high']
+export type ThinkingLevel = (typeof thinkingLevels)[number]
+
 type GeminiSchema = {
 	[k: string]: any
 }
@@ -18,7 +21,7 @@ type GeminiOptionsBase = {
 	model: GeminiModel
 	systemInstruction?: string | string[]
 	previousInteractionId?: string
-	thinkingLevel?: 'minimal' | 'low' | 'medium' | 'high'
+	thinkingLevel?: ThinkingLevel
 	debug?: boolean
 }
 
