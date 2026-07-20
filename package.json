@@ -1,0 +1,39 @@
+{
+	"name": "@vdegenne/gemini",
+	"version": "0.1.0",
+	"description": "",
+	"type": "module",
+	"exports": {
+		".": {
+			"import": "./lib/index.js",
+			"types": "./lib/index.d.ts"
+		}
+	},
+	"files": [
+		"./lib/"
+	],
+	"scripts": {
+		"build": "wireit"
+	},
+	"devDependencies": {
+		"typescript": "^7.0.2",
+		"wireit": "^0.14.13"
+	},
+	"wireit": {
+		"build": {
+			"command": "tsc --pretty",
+			"clean": "if-file-deleted",
+			"files": [
+				"./tsconfig.json",
+				"./src"
+			],
+			"output": [
+				"./lib"
+			]
+		}
+	},
+	"dependencies": {
+		"@google/genai": "^2.12.0",
+		"@modelcontextprotocol/sdk": "^1.29.0"
+	}
+}
