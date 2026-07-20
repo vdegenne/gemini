@@ -9,7 +9,7 @@ export const geminiModels = [
 ] as const
 export type GeminiModel = (typeof geminiModels)[number]
 
-export const thinkingLevels = ['minimal', 'low', 'medium', 'high']
+export const thinkingLevels = ['minimal', 'low', 'medium', 'high'] as const
 export type ThinkingLevel = (typeof thinkingLevels)[number]
 
 type GeminiSchema = {
