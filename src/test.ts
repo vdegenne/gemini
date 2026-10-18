@@ -7,7 +7,7 @@ const {output, previousInteractionId} = await askGemini(
 	'Reply with exactly: Gemini works!',
 	{
 		apiKey,
-		model: 'gemini-3.5-flash',
+		model: 'gemini-3.1-flash-lite',
 		debug: true,
 	},
 )

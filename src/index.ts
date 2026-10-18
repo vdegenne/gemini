@@ -1,12 +1,21 @@
 import {GoogleGenAI, Type} from '@google/genai'
+import {
+	isModelUnavailableError,
+	isRateLimitError,
+	ModelUnavailableError,
+	RateLimitError,
+} from './errors.js'
 
 export const geminiModels = [
-	'gemini-3.5-flash', //
+	'gemini-4-argon',
+	'gemini-3.8-flash',
+	'gemini-3.7-flash',
+	'gemini-3.6-flash',
+	'gemini-3.5-flash',
+	'gemini-3.5-flash-lite',
 	'gemini-3.1-flash-lite',
-	'gemini-2.5-pro',
-	'gemini-2.5-flash-lite',
-	'gemini-2.5-flash',
 ] as const
+
 export type GeminiModel = (typeof geminiModels)[number]
 
 export const thinkingLevels = ['minimal', 'low', 'medium', 'high'] as const
@@ -23,27 +32,6 @@ type GeminiOptionsBase = {
 	previousInteractionId?: string
 	thinkingLevel?: ThinkingLevel
 	debug?: boolean
-}
-
-export class RateLimitError extends Error {
-	constructor(message = 'Gemini rate limit exceeded') {
-		super(message)
-		this.name = 'RateLimitError'
-	}
-}
-
-function isRateLimitError(error: unknown): boolean {
-	if (!(error instanceof Error)) {
-		return false
-	}
-
-	return (
-		(error as any).status === 429 ||
-		(error as any).code === 429 ||
-		error.message.toLowerCase().includes('rate limit') ||
-		error.message.toLowerCase().includes('quota') ||
-		error.message.toLowerCase().includes('resource exhausted')
-	)
 }
 
 export async function askGemini<T extends object>(
@@ -153,8 +141,15 @@ ${schema ? JSON.stringify(schema, null, 2) : 'none'}
 			throw new RateLimitError()
 		}
 
+		if (isModelUnavailableError(error)) {
+			throw new ModelUnavailableError(
+				error instanceof Error ? error.message : undefined,
+				model,
+			)
+		}
+
 		throw error
 	}
 }
 
-export {Type}
+export {ModelUnavailableError, RateLimitError, Type}
