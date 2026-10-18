@@ -2,6 +2,8 @@
 
 A lightweight TypeScript wrapper around Google's Gemini API, with support for text generation, structured JSON output, system instructions, thinking levels, conversation continuity, and custom errors.
 
+Works in both Node and Browser.
+
 ## Installation
 
 ```bash
@@ -33,15 +35,15 @@ console.log(output)
 
 ## Options
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `apiKey` | `string` | Required | Your Google Gemini API key. |
-| `model` | `GeminiModel` | Required | The model to use. |
-| `systemInstruction` | `string \| string[]` | — | System instructions for the model. |
-| `thinkingLevel` | `ThinkingLevel` | `'medium'` | Reasoning effort: `'minimal'`, `'low'`, `'medium'`, or `'high'`. |
-| `previousInteractionId` | `string` | — | Previous interaction ID for conversation continuity. |
-| `schema` | `object` | — | JSON schema for structured output. |
-| `debug` | `boolean` | `false` | Logs request details to the console. |
+| Option                  | Type                 | Default    | Description                                                      |
+| ----------------------- | -------------------- | ---------- | ---------------------------------------------------------------- |
+| `apiKey`                | `string`             | Required   | Your Google Gemini API key.                                      |
+| `model`                 | `GeminiModel`        | Required   | The model to use.                                                |
+| `systemInstruction`     | `string \| string[]` | —          | System instructions for the model.                               |
+| `thinkingLevel`         | `ThinkingLevel`      | `'medium'` | Reasoning effort: `'minimal'`, `'low'`, `'medium'`, or `'high'`. |
+| `previousInteractionId` | `string`             | —          | Previous interaction ID for conversation continuity.             |
+| `schema`                | `object`             | —          | JSON schema for structured output.                               |
+| `debug`                 | `boolean`            | `false`    | Logs request details to the console.                             |
 
 ## System instructions
 
@@ -101,19 +103,16 @@ When a schema is supplied, `output` is typed as the requested generic type. The 
 Pass the previous response's `previousInteractionId` to continue a conversation.
 
 ```ts
-const first = await askGemini(
-	'My project uses TypeScript and Lit.',
-	{apiKey, model: 'gemini-3.8-flash'},
-)
+const first = await askGemini('My project uses TypeScript and Lit.', {
+	apiKey,
+	model: 'gemini-3.8-flash',
+})
 
-const second = await askGemini(
-	'What testing framework would suit it?',
-	{
-		apiKey,
-		model: 'gemini-3.8-flash',
-		previousInteractionId: first.previousInteractionId,
-	},
-)
+const second = await askGemini('What testing framework would suit it?', {
+	apiKey,
+	model: 'gemini-3.8-flash',
+	previousInteractionId: first.previousInteractionId,
+})
 
 console.log(second.output)
 ```
