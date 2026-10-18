@@ -14,6 +14,12 @@ export class ModelUnavailableError extends Error {
 		this.name = 'ModelUnavailableError'
 	}
 }
+export class InvalidApiKeyError extends Error {
+	constructor(message = 'Invalid Gemini API key') {
+		super(message)
+		this.name = 'InvalidApiKeyError'
+	}
+}
 
 export function isRateLimitError(error: unknown): boolean {
 	if (!(error instanceof Error)) {
@@ -29,7 +35,9 @@ export function isRateLimitError(error: unknown): boolean {
 	)
 }
 
-export function isModelUnavailableError(error: unknown): boolean {
+export function isModelUnavailableError(
+	error: unknown,
+): error is Error & {status?: number; statusCode?: number} {
 	if (!(error instanceof Error)) {
 		return false
 	}
@@ -44,4 +52,17 @@ export function isModelUnavailableError(error: unknown): boolean {
 			message.includes('not found') ||
 			message.includes('not supported'))
 	)
+}
+
+export function isInvalidApiKeyError(
+	error: unknown,
+): error is Error & {status?: number; statusCode?: number} {
+	if (!(error instanceof Error)) return false
+
+	const err = error as Error & {
+		status?: number
+		statusCode?: number
+	}
+
+	return (err.status ?? err.statusCode) === 401
 }

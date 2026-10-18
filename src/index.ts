@@ -1,5 +1,7 @@
 import {GoogleGenAI, Type} from '@google/genai'
 import {
+	InvalidApiKeyError,
+	isInvalidApiKeyError,
 	isModelUnavailableError,
 	isRateLimitError,
 	ModelUnavailableError,
@@ -137,15 +139,16 @@ ${schema ? JSON.stringify(schema, null, 2) : 'none'}
 			previousInteractionId: response.id,
 		}
 	} catch (error) {
+		if (isInvalidApiKeyError(error)) {
+			throw new InvalidApiKeyError(error.message)
+		}
+
 		if (isRateLimitError(error)) {
 			throw new RateLimitError()
 		}
 
 		if (isModelUnavailableError(error)) {
-			throw new ModelUnavailableError(
-				error instanceof Error ? error.message : undefined,
-				model,
-			)
+			throw new ModelUnavailableError(error.message, model)
 		}
 
 		throw error
