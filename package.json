@@ -13,7 +13,8 @@
 		"./lib/"
 	],
 	"scripts": {
-		"build": "wireit"
+		"build": "wireit",
+		"test": "wireit"
 	},
 	"devDependencies": {
 		"typescript": "^7.0.2",
@@ -30,10 +31,18 @@
 			"output": [
 				"./lib"
 			]
+		},
+		"test": {
+			"command": "node ./lib/test.js",
+			"dependencies": [
+				"build"
+			],
+			"files": [],
+			"output": []
 		}
 	},
 	"dependencies": {
-		"@google/genai": "^2.12.0",
-		"@modelcontextprotocol/sdk": "^1.29.0"
+		"@google/genai": "^2.30.0",
+		"@modelcontextprotocol/sdk": "^1.32.1"
 	}
 }
