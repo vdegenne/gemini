@@ -155,4 +155,4 @@ ${schema ? JSON.stringify(schema, null, 2) : 'none'}
 	}
 }
 
-export {ModelUnavailableError, RateLimitError, Type}
+export {InvalidApiKeyError, ModelUnavailableError, RateLimitError, Type}
