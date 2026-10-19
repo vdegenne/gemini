@@ -22,6 +22,7 @@ export type GeminiModel = (typeof geminiModels)[number]
 
 // export const thinkingLevels = ['minimal', 'low', 'medium', 'high'] as const
 export const thinkingLevels = Object.values(ThinkingLevel)
+export {ThinkingLevel}
 
 type GeminiSchema = {
 	[k: string]: any
