@@ -1,4 +1,4 @@
-import {GoogleGenAI, ThinkingLevel, Type} from '@google/genai'
+import {GoogleGenAI, Type} from '@google/genai'
 import {
 	InvalidApiKeyError,
 	isInvalidApiKeyError,
@@ -20,9 +20,8 @@ export const geminiModels = [
 
 export type GeminiModel = (typeof geminiModels)[number]
 
-// export const thinkingLevels = ['minimal', 'low', 'medium', 'high'] as const
-export const thinkingLevels = Object.values(ThinkingLevel)
-export {ThinkingLevel}
+export const thinkingLevels = ['minimal', 'low', 'medium', 'high'] as const
+export type ThinkingLevel = (typeof thinkingLevels)[number]
 
 type GeminiSchema = {
 	[k: string]: any
