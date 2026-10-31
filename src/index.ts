@@ -34,6 +34,7 @@ type GeminiOptionsBase = {
 	previousInteractionId?: string
 	thinkingLevel?: ThinkingLevel
 	debug?: boolean
+	signal?: AbortSignal
 }
 
 export async function askGemini<T extends object>(
@@ -113,22 +114,27 @@ ${schema ? JSON.stringify(schema, null, 2) : 'none'}
 	}
 
 	try {
-		const response = await ai.interactions.create({
-			previous_interaction_id,
-			model,
-			generation_config,
-			input,
-			system_instruction,
-			...(schema
-				? {
-						response_format: {
-							type: 'text',
-							mime_type: 'application/json',
-							schema,
-						},
-					}
-				: {}),
-		})
+		const response = await ai.interactions.create(
+			{
+				previous_interaction_id,
+				model,
+				generation_config,
+				input,
+				system_instruction,
+				...(schema
+					? {
+							response_format: {
+								type: 'text',
+								mime_type: 'application/json',
+								schema,
+							},
+						}
+					: {}),
+			},
+			{
+				signal: options.signal,
+			},
+		)
 
 		return {
 			output: response.output_text
