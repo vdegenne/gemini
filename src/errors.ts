@@ -64,5 +64,7 @@ export function isInvalidApiKeyError(
 		statusCode?: number
 	}
 
-	return (err.status ?? err.statusCode) === 401
+	const status = err.status ?? err.statusCode
+
+	return status === 400 || status === 401
 }
